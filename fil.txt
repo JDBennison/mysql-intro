@@ -1,0 +1,75 @@
+mysql> source test.sql
++----------+
+| count(*) |
++----------+
+|     3503 |
++----------+
+1 row in set (0.01 sec)
+
++----------+
+| count(*) |
++----------+
+|      275 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Album LIMIT 5;
++---------+---------------------------------------+----------+
+| AlbumId | Title                                 | ArtistId |
++---------+---------------------------------------+----------+
+|       1 | For Those About To Rock We Salute You |        1 |
+|       2 | Balls to the Wall                     |        2 |
+|       3 | Restless and Wild                     |        2 |
+|       4 | Let There Be Rock                     |        1 |
+|       5 | Big Ones                              |        3 |
++---------+---------------------------------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Title, Name FROM Album;
+ERROR 1054 (42S22): Unknown column 'Name' in 'field list'
+mysql> SELECT Title, Name FROM Album
+    -> JOIN Artist ON Album.ArtistID
+    -> JOIN Artist ON Album.ArtistID = Artist.ArtistID
+    -> LIMIT 5;
+ERROR 1066 (42000): Not unique table/alias: 'Artist'
+mysql> SELECT Title, Name FROM Album JOIN Artist ON Album.ArtistID = Artist.ArtistID LIMIT 5;
++---------------------------------------+-----------+
+| Title                                 | Name      |
++---------------------------------------+-----------+
+| For Those About To Rock We Salute You | AC/DC     |
+| Balls to the Wall                     | Accept    |
+| Restless and Wild                     | Accept    |
+| Let There Be Rock                     | AC/DC     |
+| Big Ones                              | Aerosmith |
++---------------------------------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> DESC Genre;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| GenreId | int          | NO   | PRI | NULL    | auto_increment |
+| Name    | varchar(120) | YES  |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO Genre (Name) VALUES ('Trad');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT LAST_INSERT_ID()
+    -> ;
++------------------+
+| LAST_INSERT_ID() |
++------------------+
+|               26 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Name FROM Genre WHERE GenreId = 26;
++------+
+| Name |
++------+
+| Trad |
++------+
+1 row in set (0.00 sec)
+
